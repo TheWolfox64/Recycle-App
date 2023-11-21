@@ -1,13 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Image, Text, StyleSheet, View, Button, TextInput, Alert } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { Image, Text, StyleSheet, View, Button, TextInput, Alert, TouchableOpacity } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
-import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import { getReactNativePersistence } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-
-//import { firebaseConfig } from './firebase-config';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home from './home';
+import Register from './register';
+import { useNavigation } from 'expo-router';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBTEniI4rlOs8N4FdvBuNcIjDQUlXQKAgs",
@@ -20,27 +22,16 @@ const firebaseConfig = {
   measurementId: "G-QKC3BTZHPS"
 };
 
+initializeApp(firebaseConfig);
 
+const Stack = createNativeStackNavigator();
 
-function HomeScreen() {
-  return (
-    <View>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
-
-function LoginScreen() {
-
+function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
 
-  const app = initializeApp(firebaseConfig);
- 
-
-  const auth = getAuth(app, {
-    persistence: getReactNativePersistence(ReactNativeAsyncStorage)
-  });
+  const auth = getAuth();
 
   const handleCreateAccount = () => {
     createUserWithEmailAndPassword(auth, email, password)
@@ -62,7 +53,8 @@ function LoginScreen() {
         console.log('Inicio de Sesión Exitoso');
         const user = userCredential.user;
         console.log(user);
-        Alert.alert('Inicio de sesion exitoso!');
+        Alert.alert('Inicio de sesión exitoso!');
+        navigation.navigate('Home');
       })
       .catch(error => {
         console.log(error);
@@ -91,9 +83,12 @@ function LoginScreen() {
           value={password}
           secureTextEntry={true}
         />
-        <Button title="Iniciar Sesión" onPress={handleSignIn} style={styles.button} />
-        <Button title="Registrarse" onPress={handleCreateAccount} style={styles.button} />
-        <Button title="Ir a Inicio (Solo Testeo)" onPress={() => {}} style={styles.button} />
+        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+          <Text>Iniciar sesión</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
+          <Text>Crear cuenta</Text>
+        </TouchableOpacity>
       </View>
       <StatusBar style="auto" />
     </View>
@@ -101,7 +96,14 @@ function LoginScreen() {
 }
 
 export default function App() {
- return(<LoginScreen/>);
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Home'>
+        <Stack.Screen name='Login' component={LoginScreen} />
+        <Stack.Screen name='Home' component={Home} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -131,10 +133,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     top: 45,
-    bottom: 80,
   },
   login: {
-    flex: 1,
+    marginTop: 30,
     width: '100%',
     height: '100%',
     position: 'absolute',
@@ -144,7 +145,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 30,
+    marginTop: 100,
   },
   input: {
     width: '80%',
@@ -153,8 +155,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     padding: 10,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
   },
   button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '80%',
+    height: 40,
+    backgroundColor: '#DDDDDD',
+    borderRadius: 10,
     marginBottom: 10,
   },
 });
