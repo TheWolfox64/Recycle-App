@@ -5,8 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Register from './register';
 import Login from './login';
+import Principal from './principal';
 
-const Stack = createNativeStackNavigator();
 
 const ChngScreenLogin = ({ navigation }) => {
   navigation.navigate('Login');

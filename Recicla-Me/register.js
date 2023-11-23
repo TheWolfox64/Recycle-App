@@ -8,6 +8,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './home';
 import Login from './login';
 import Principal from './principal';
+import Register from './register';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyBTEniI4rlOs8N4FdvBuNcIjDQUlXQKAgs",
@@ -22,12 +24,16 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 
-const Stack = createNativeStackNavigator();
+
 
 export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordSame, setPasswordSame] = useState('');
+
+  const ChngScreenLogin = ({ navigation }) => {
+    navigation.navigate('Login');
+  };
 
 
 
@@ -62,6 +68,12 @@ export default function RegisterScreen({ navigation }) {
         <Text style={styles.title}>Registro</Text>
         <TextInput
           style={styles.input}
+          placeholder="Nombre"
+          onChangeText={text => setEmail(text)}
+          value={email}
+        />
+        <TextInput
+          style={styles.input}
           placeholder="Email"
           onChangeText={text => setEmail(text)}
           value={email}
@@ -82,6 +94,13 @@ export default function RegisterScreen({ navigation }) {
         />
         <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
           <Text>Crear cuenta</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.content}>Ya tienes una cuenta?</Text>
+        <Text style={styles.content}>No te preocupes... Inicia sesion aqui</Text>
+
+        <TouchableOpacity style={styles.button} onPress={() => ChngScreenLogin({ navigation })}>
+          <Text>Iniciar sesion</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -148,5 +167,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDDDDD',
     borderRadius: 10,
     marginBottom: 10,
+  },
+  content:{
+     marginBottom: 10,
   },
 });
