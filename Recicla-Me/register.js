@@ -30,6 +30,7 @@ export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordSame, setPasswordSame] = useState('');
+  const [Nombre, setNombre] = useState('');
 
   const ChngScreenLogin = ({ navigation }) => {
     navigation.navigate('Login');
@@ -69,8 +70,8 @@ export default function RegisterScreen({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="Nombre"
-          onChangeText={text => setEmail(text)}
-          value={email}
+          onChangeText={text => setNombre(text)}
+          value={Nombre}
         />
         <TextInput
           style={styles.input}

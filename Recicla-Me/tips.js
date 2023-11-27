@@ -1,55 +1,41 @@
-import React from 'react';
-import { Image, ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { Component } from 'react';
+import { Image, ImageBackground, StyleSheet, Text, View, TouchableOpacity, Linking } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-
+import 'react-native-gesture-handler';
 import Home from './home';
 import Register from './register';
 import Login from './login';
-import Nosotros from './nosotros';
-import Tips from './tips';
-import Solidos from './solidos';
-import Acopio from './acopio';
 
 const slides = [
-  {
-    key: "one",
-    title: "Residuos Solidos",
-    text: "Aprende sobre los diferentes tipos de residuos solidos que hay en México.",
-    Image: require('./assets/icons/principal/residuos.png'),
-    screen: 'Solidos',
-  },
-  {
-    key: "two",
-    title: "Nosotros",
-    text: "Conoce más acerca de nuestra historia, misión y visión",
-    Image: require('./assets/icons/principal/nosotros.png'),
-    screen: 'Nosotros',
-  },
-  {
-    key: "three",
-    title: "Tips",
-    text: "Conoce nuevas formas de reciclar, reutilizar y reducir los desechos solidos.",
-    Image: require('./assets/icons/principal/tips.png'),
-    screen: 'Tips',
-  },
-  {
-    key: "four",
-    title: "Centros de acopio",
-    text: "Localiza los centros de acopio más cercanos a ti, Cuidemos el ambiente.",
-    Image: require('./assets/icons/principal/ubicacion.png'),
-    screen: 'Acopio',
-  }
-];
+    {
+        key: "one",
+        title: "Tips",
+        text: "Una buena gestión de desechos sólidos permite un uso adecuado a los recursos naturales.",
+        Image:require('./assets/icons/tips/tips3.png'),
+        url: 'https://laecocosmopolita.com/2017/03/07/10-consejos-para-reducir-residuos-en-hogar/'
+      },
+      {
+        key: "two",
+        title: "Tips",
+        text: "Sabias que puedes crear miles de cosas nuevas utilizando cosas viejas, no te olvides de RECICLAR!.",
+        Image:require('./assets/icons/tips/tips2.png'),
+        url: 'https://laecocosmopolita.com/2017/03/07/10-consejos-para-reducir-residuos-en-hogar/'
+      },
+      {
+        key: "three",
+        title: "Tips",
+        text: "Separa tu basura para cuidar el medio ambiente y evitar la extinción de diversas especies. Recicla, Reutiliza y Reusar.",
+        Image:require('./assets/icons/tips/tips1.png'),
+        url: 'https://laecocosmopolita.com/2017/03/07/10-consejos-para-reducir-residuos-en-hogar/'
+      }
+]
 
-const Principal = () => {
-  const navigation = useNavigation();
+const Drawer = createDrawerNavigator();
 
-  const navigateToScreen = (screen) => {
-    navigation.navigate(screen);
-  };
-
-  const _renderItem = ({ item }) => {
+export default class Tips extends Component {
+  _renderItem = ({ item }) => {
     return (
       <View style={styles.slide}>
         <ImageBackground source={require('./assets/background.png')} style={styles.background} />
@@ -61,8 +47,8 @@ const Principal = () => {
           <View style={styles.contenidoText}>
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.text}>{item.text}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => navigateToScreen(item.screen)}>
-              <Text>Saber Más...</Text>
+            <TouchableOpacity style={styles.button} onPress={() => Linking.openURL(item.url)}>
+              <Text>Saber mas...</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -70,14 +56,16 @@ const Principal = () => {
     );
   };
 
-  return (
-    <AppIntroSlider
-      renderItem={_renderItem}
-      data={slides}
-      activeDotStyle={styles.activeDot}
-    />
-  );
-};
+  render() {
+    return (
+      <AppIntroSlider
+        renderItem={this._renderItem}
+        data={slides}
+        activeDotStyle={styles.activeDot}
+      />
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   contenidoText: {
@@ -162,5 +150,3 @@ const styles = StyleSheet.create({
     margin: '10%',
   },
 });
-
-export default Principal;

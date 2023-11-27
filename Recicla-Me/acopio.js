@@ -1,55 +1,42 @@
-import React from 'react';
-import { Image, ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { Component } from 'react';
+import { Image, ImageBackground, StyleSheet, Text, View, TouchableOpacity, Linking } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-
+import 'react-native-gesture-handler';
 import Home from './home';
 import Register from './register';
 import Login from './login';
-import Nosotros from './nosotros';
-import Tips from './tips';
-import Solidos from './solidos';
-import Acopio from './acopio';
 
 const slides = [
-  {
-    key: "one",
-    title: "Residuos Solidos",
-    text: "Aprende sobre los diferentes tipos de residuos solidos que hay en México.",
-    Image: require('./assets/icons/principal/residuos.png'),
-    screen: 'Solidos',
-  },
-  {
-    key: "two",
-    title: "Nosotros",
-    text: "Conoce más acerca de nuestra historia, misión y visión",
-    Image: require('./assets/icons/principal/nosotros.png'),
-    screen: 'Nosotros',
-  },
-  {
-    key: "three",
-    title: "Tips",
-    text: "Conoce nuevas formas de reciclar, reutilizar y reducir los desechos solidos.",
-    Image: require('./assets/icons/principal/tips.png'),
-    screen: 'Tips',
-  },
-  {
-    key: "four",
-    title: "Centros de acopio",
-    text: "Localiza los centros de acopio más cercanos a ti, Cuidemos el ambiente.",
-    Image: require('./assets/icons/principal/ubicacion.png'),
-    screen: 'Acopio',
-  }
-];
+    {
+        key: "one",
+        title: "Grupo Maqueda",
+        text: "Cerrada flores Magón, 69 Colonia la estación, Mixquiahuala, Hgo. Tel. 7387251412",
+        Image:require('./assets/map.png'),
+        url: 'https://maps.app.goo.gl/2uJujwxozcFFcgSn6'
+        
+      },
+      {
+        key: "two",
+        title: "Compra-Venta de metales y baterias",
+        text: "Boulevard octaviano flores Mayorga, 0 Colonia Bondho, Mixquiahuala, Hgo.",
+        Image:require('./assets/map.png'),
+        url: 'https://www.google.com.mx/maps/search/El+Bondho+recicladora/@20.2342204,-99.2042878,15z/data=!3m1!4b1?entry=ttu'
+      },
+      {
+        key: "three",
+        title: "Recicladora",
+        text: "Avenida Cuitláhuac, 0 Colonia el calvario, Mixquiahuala, Hgo.",
+        Image:require('./assets/map.png'),
+        url: 'https://maps.app.goo.gl/PQZGJjn9vYudut1n9'
+      }
+]
 
-const Principal = () => {
-  const navigation = useNavigation();
+const Drawer = createDrawerNavigator();
 
-  const navigateToScreen = (screen) => {
-    navigation.navigate(screen);
-  };
-
-  const _renderItem = ({ item }) => {
+export default class Acopio extends Component {
+  _renderItem = ({ item }) => {
     return (
       <View style={styles.slide}>
         <ImageBackground source={require('./assets/background.png')} style={styles.background} />
@@ -61,8 +48,8 @@ const Principal = () => {
           <View style={styles.contenidoText}>
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.text}>{item.text}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => navigateToScreen(item.screen)}>
-              <Text>Saber Más...</Text>
+            <TouchableOpacity style={styles.button} onPress={() => Linking.openURL(item.url)}>
+              <Text>Saber mas...</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -70,14 +57,16 @@ const Principal = () => {
     );
   };
 
-  return (
-    <AppIntroSlider
-      renderItem={_renderItem}
-      data={slides}
-      activeDotStyle={styles.activeDot}
-    />
-  );
-};
+  render() {
+    return (
+      <AppIntroSlider
+        renderItem={this._renderItem}
+        data={slides}
+        activeDotStyle={styles.activeDot}
+      />
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   contenidoText: {
@@ -137,7 +126,7 @@ const styles = StyleSheet.create({
   },
   resImage: {
     flex: 1,
-    width: '50%',
+    width: '55%',
     height: '100%',
     alignSelf: 'center',
     position: 'absolute',
@@ -162,5 +151,3 @@ const styles = StyleSheet.create({
     margin: '10%',
   },
 });
-
-export default Principal;

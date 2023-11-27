@@ -141,5 +141,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDDDDD',
     borderRadius: 10,
     marginBottom: 10,
+    marginTop:  15,
   },
+  content:{
+
+}
 });
